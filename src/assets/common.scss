@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
 /* page */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Helvetica Neue", Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei", 'Noto Sans KR', "微软雅黑", Arial, sans-serif;
 }
 
 .g-center {
@@ -83,7 +86,7 @@ html, body {
 
 .logo {
     float: left;
-    margin-left: 10px;
+    margin-left: 20px;
     width: 270px;
     font-size: 1.4em;
     text-decoration: none;

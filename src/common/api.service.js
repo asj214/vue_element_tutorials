@@ -3,7 +3,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from '@/router'
 import store from '@/store'
-import { BASE_API_URL } from './configs' 
+import { BASE_API_URL } from './configs'
 
 const api = axios.create({
   baseURL: BASE_API_URL

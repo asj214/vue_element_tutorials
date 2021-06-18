@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import locale from 'element-ui/lib/locale/lang/ko'
 import App from './App.vue'
+import './common/api.service'
 
 Vue.use(ElementUI, { locale })
 

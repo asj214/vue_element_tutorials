@@ -1,5 +1,9 @@
 # vue_element_tutorials
 
+## environment
+- Node v14.15
+
+
 ## Project setup
 ```
 npm install

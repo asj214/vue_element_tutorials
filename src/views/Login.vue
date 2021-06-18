@@ -6,26 +6,26 @@
         <p class="des">You Need Authorization</p>
           <el-form-item required>
             <el-input
-                v-model="credentials.email"
-                :autofocus="true"
-                placeholder="Email"
+              v-model="credentials.email"
+              :autofocus="true"
+              placeholder="Email"
             >
               <template slot="prepend"><i class="el-icon-message"></i></template>
             </el-input>
           </el-form-item>
           <el-form-item required>
             <el-input
-                v-model="credentials.password"
-                type="password"
-                placeholder="Password"
+              v-model="credentials.password"
+              type="password"
+              placeholder="Password"
             >
               <template slot="prepend"><i class="el-icon-lock"></i></template>
             </el-input>
           </el-form-item>
         <el-form-item>
           <el-button
-              :loading="loading"
-              style="width:100%" @click.native="login" type="primary">Login</el-button>
+            :loading="loading"
+            style="width:100%" @click.native="login" type="primary">Login</el-button>
         </el-form-item>
       </el-form>
     </div>

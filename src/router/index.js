@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import user from './users'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const routes = [
           name: '대시보드'
         },
         component: () => import('../views/Main')
-      }
+      },
+      ...user
     ]
   }
 ]

@@ -3,10 +3,7 @@
     <el-container>
       <el-header>
         <el-row type="flex" class="g-head">
-          <div class="hidden-sm-and-up xs-menu">
-            <el-button type="text" icon="el-icon-menu" @click="drawer = true"></el-button>
-          </div>
-          <router-link :to="{ name: 'Dashboard' }" class="logo">ItemMaster</router-link>
+          <router-link :to="{ name: 'Dashboard' }" class="logo">admin</router-link>
           <div class="nav">
             <div class="usermenu">
               <el-dropdown trigger="click">
@@ -41,29 +38,11 @@
         </el-main>
       </el-container>
     </el-container>
-    <el-drawer
-        :visible.sync="drawer"
-        :direction="direction"
-        :with-header="false"
-        size=15
-    >
-      <Menu />
-    </el-drawer>
   </div>
 </template>
-<style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-* {
-  font-family: "Helvetica Neue", Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei", 'Noto Sans KR', "微软雅黑", Arial, sans-serif;
-}
-</style>
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  data: () => ({
-    drawer: false,
-    direction: 'ltr'
-  }),
   components: {
     Menu: () => import('./LeftMenu.vue')
   },
