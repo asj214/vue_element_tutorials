@@ -18,6 +18,7 @@
   </el-table>
 </template>
 <script>
+import { BASE_API_URL } from '@/common/configs.js'
 export default {
   data () {
     return {
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     async getLists () {
-      const { status, data } = await this.axios.get('users')
+      const { status, data } = await this.axios.get(`${BASE_API_URL}users`)
       if (status === 200) {
         this.lists = data
       }

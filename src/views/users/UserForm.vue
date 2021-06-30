@@ -54,6 +54,7 @@
   </el-row>
 </template>
 <script>
+import { BASE_API_URL } from '@/common/configs.js'
 export default {
   data () {
     return {
@@ -90,7 +91,7 @@ export default {
   },
   methods: {
     async getData () {
-      const { status, data } = await this.axios.get(`users/${this.id}`)
+      const { status, data } = await this.axios.get(`${BASE_API_URL}users/${this.id}`)
       if (status === 200) {
         this.user = data
         this.isReadOnly = true

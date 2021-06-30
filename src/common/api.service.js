@@ -3,11 +3,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from '@/router'
 import store from '@/store'
-import { BASE_API_URL } from './configs'
 
-const api = axios.create({
-  baseURL: BASE_API_URL
-})
+const api = axios.create()
 
 // 요청 인터셉터 추가
 api.interceptors.request.use(

@@ -24,6 +24,14 @@ const routes = [
         },
         component: () => import('../views/Main')
       },
+      {
+        name: 'Menu',
+        path: 'menus',
+        meta: {
+          name: '관리자 메뉴 관리'
+        },
+        component: () => import('../views/Menu')
+      },
       ...user
     ]
   }
