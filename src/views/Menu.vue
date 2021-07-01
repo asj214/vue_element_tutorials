@@ -147,6 +147,7 @@ export default {
       this.isModify = false
     },
     handleSetForm (data) {
+      if (data.depth === -1) return
       this.resetForm()
 
       let pageId = null

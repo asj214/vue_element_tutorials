@@ -1,6 +1,9 @@
 <template>
   <el-menu :default-active="activeMenu" class="g-side" v-show="visible" router>
     <template v-for="(menu, key) in menus">
+      <Tree :node="menu" :key="key"></Tree>
+    </template>
+    <!-- <template v-for="(menu, key) in menus">
       <el-menu-item :key="key" :index="menu.page.path" v-if="!menu.children">{{ menu.name }}</el-menu-item>
       <el-submenu :key="key" v-if="menu.children" :index="menu.page.path">
         <template slot="title">{{ menu.name }}</template>
@@ -8,11 +11,12 @@
           <el-menu-item :index="child.page.path" :key="child.id">{{ child.name }}</el-menu-item>
         </template>
       </el-submenu>
-    </template>
+    </template> -->
   </el-menu>
 </template>
 <script>
 import { generateNested } from '@/common/utils'
+import Tree from '@/components/Tree'
 
 export default {
   data () {
@@ -31,6 +35,9 @@ export default {
       return '/' + path.join('/')
     }
   },
+  components: {
+    Tree
+  },
   created () {
     this.getMenuData()
   },
@@ -39,6 +46,7 @@ export default {
       const { status, data } = await this.axios.get('menus')
       if (status === 200) {
         this.menus = generateNested(data)
+        console.log(this.menus)
         this.visible = true
       }
     }
