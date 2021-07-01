@@ -47,17 +47,18 @@ export default new Vuex.Store({
       await context.dispatch('LOGIN_CHECK_AUTH')
     },
     async LOGIN (context, credentials) {
-      const resp = await Vue.axios.post('login', credentials)
+      const resp = await Vue.axios.post('auth/login', credentials)
       if (resp.status === 200) {
         context.commit('SET_AUTH', resp.data)
       }
+      return resp
     },
     LOGOUT (context) {
       context.commit('PURGE_AUTH')
     },
     async CHECK_AUTH (context) {
-      const { status, data } = await Vue.axios.get('users/me')
-      if ([401, 403].includes(status)) {
+      const { status, data } = await Vue.axios.get('auth/me')
+      if ([401].includes(status)) {
         context.commit('PURGE_AUTH')
         router.push({ name: 'Login', query: { redirect: window.location.pathname } })
       } else {

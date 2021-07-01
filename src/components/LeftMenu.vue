@@ -12,6 +12,8 @@
   </el-menu>
 </template>
 <script>
+import { generateNested } from '@/common/utils'
+
 export default {
   data () {
     return {
@@ -34,11 +36,10 @@ export default {
   },
   methods: {
     async getMenuData () {
-      const requestUrl = 'http://127.0.0.1:8000/api/menus/tree'
-      const { status, data } = await this.axios.get(requestUrl)
+      const { status, data } = await this.axios.get('menus')
       if (status === 200) {
+        this.menus = generateNested(data)
         this.visible = true
-        this.menus = data
       }
     }
   }

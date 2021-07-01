@@ -51,8 +51,11 @@ export default {
     }
   },
   methods: {
-    login () {
-      console.log(this.credentials)
+    async login () {
+      const { status } = await this.$store.dispatch('LOGIN', { ...this.credentials })
+      if (status === 200) {
+        this.$router.push({ name: 'Main' })
+      }
     }
   }
 }

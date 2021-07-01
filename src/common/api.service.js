@@ -3,8 +3,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from '@/router'
 import store from '@/store'
+import { BACKEND_API_URL } from './configs'
 
-const api = axios.create()
+const api = axios.create({
+  baseURL: BACKEND_API_URL
+})
 
 // 요청 인터셉터 추가
 api.interceptors.request.use(
@@ -22,17 +25,15 @@ api.interceptors.response.use(
     return response
   },
   function (error) {
-    if ([401, 403].includes(error.response.status)) {
-      Vue.axios.defaults.headers.common.Authorization = null
+    if ([401].includes(error.response.status)) {
+      delete Vue.axios.defaults.headers.common.Authorization
       store.dispatch('LOGOUT').then((res) => {
         alert('로그인 정보가 만료되어 로그아웃 되었습니다.')
         router.push({ name: 'Login', query: { redirect: window.location.pathname } })
+        return false
       })
-    } else if (error.response.status === 304) {
-      return Promise.resolve({ status: 304 })
     }
 
-    alert('에러가 발생했습니다.')
     return Promise.reject(error)
   }
 )

@@ -7,10 +7,22 @@ import 'element-ui/lib/theme-chalk/display.css'
 import locale from 'element-ui/lib/locale/lang/ko'
 import App from './App.vue'
 import './common/api.service'
+import { ID_TOKEN_KEY } from '@/common/configs'
 
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
+
+const enhanceAccessToken = () => {
+  const accessToken = localStorage.getItem(ID_TOKEN_KEY)
+  if (!accessToken) {
+    return store.dispatch('LOGOUT')
+  }
+  Vue.axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  store.dispatch('CHECK_AUTH')
+}
+
+enhanceAccessToken()
 
 new Vue({
   store,

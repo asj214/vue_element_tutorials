@@ -37,7 +37,7 @@
             <el-form-item label="순서" required>
               <el-input-number v-model="menu.order" :min="1"></el-input-number>
             </el-form-item>
-            <el-form-item label="페이지" required>
+            <el-form-item label="페이지">
               <el-select v-model="menu.page_id" filterable placeholder="페이지 선택">
                   <el-option
                     v-for="page in pages"
@@ -49,6 +49,15 @@
             </el-form-item>
             <el-form-item label="공개 설정">
               <el-switch v-model="menu.is_published"></el-switch>
+            </el-form-item>
+          </el-form>
+          <el-form label-width="140px" size="mini">
+            <el-form-item>
+              <div class="float-left" style="margin-right: 5px;">
+                <el-button type="primary" @click.prevent="onSubmit" :loading="isLoading" v-if="!isModify">저장</el-button>
+                <el-button type="primary" @click="onModify" :loading="isLoading" v-else>수정</el-button>
+                <el-button type="danger" @click="onDelete" v-if="isModify">삭제</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -67,10 +76,14 @@
 }
 </style>
 <script>
+import { generateNested } from '@/common/utils'
+
 export default {
   data () {
     return {
       visible: false,
+      isModify: false,
+      isLoading: false,
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -79,6 +92,7 @@ export default {
         {
           name: 'Admin',
           disabled: true,
+          depth: -1,
           children: []
         }
       ],
@@ -90,7 +104,7 @@ export default {
         descr: '',
         name: '',
         order: 0,
-        depth: 1,
+        depth: 0,
         is_published: false
       },
       pages: [],
@@ -104,18 +118,16 @@ export default {
   },
   methods: {
     async getPages () {
-      const requestUrl = 'http://127.0.0.1:8000/api/pages'
-      const { status, data } = await this.axios.get(requestUrl)
+      const { status, data } = await this.axios.get('pages')
       if (status === 200) {
         this.pages = data
       }
     },
     async getData () {
-      const requestUrl = 'http://127.0.0.1:8000/api/menus'
-      const { status, data } = await this.axios.get(requestUrl)
+      const { status, data } = await this.axios.get('menus')
       if (status === 200) {
         this.menuList = data
-        const nestedMenu = this.generateNested(data)
+        const nestedMenu = generateNested(data)
         this.treeMenu[0].children = nestedMenu
         this.menus = nestedMenu
         this.visible = true
@@ -129,9 +141,10 @@ export default {
         name: '',
         descr: '',
         order: 0,
-        depth: 1,
+        depth: 0,
         is_published: false
       }
+      this.isModify = false
     },
     handleSetForm (data) {
       this.resetForm()
@@ -149,12 +162,19 @@ export default {
         depth: data.depth,
         is_published: data.is_published
       }
-      this.breadcrumbs = []
-      this.generateBreadcrumb(data.parent_id)
+      this.setBreadcrumb(data.parent_id)
+      this.isModify = true
     },
     handleAppendChild (data) {
       this.resetForm()
       this.menu.parent_id = data.id
+      this.menu.depth = data.depth + 1
+      this.setBreadcrumb(data.id)
+    },
+    setBreadcrumb (parentId) {
+      this.breadcrumbs = []
+      this.generateBreadcrumb(parentId)
+      this.breadcrumbs.reverse()
     },
     generateBreadcrumb (parentId) {
       const menu = this.menuList.filter(item => item.id === parentId).pop()
@@ -162,29 +182,28 @@ export default {
       this.breadcrumbs.push(menu.name)
       if (menu.parent) this.generateBreadcrumb(menu.parent)
     },
-    generateNested (rows, depth = 0, parentId) {
-      const ret = []
-      let append = {}
-      for (const i in rows) {
-        if (rows[i].depth !== depth) continue
-        if (parentId && rows[i].parent !== parentId) continue
-        append = {
-          id: rows[i].id,
-          parent_id: rows[i].parent,
-          name: rows[i].name,
-          descr: rows[i].descr,
-          depth: rows[i].depth,
-          order: rows[i].order,
-          page: rows[i].page,
-          is_published: rows[i].is_published,
-          children: this.generateNested(rows, rows[i].depth + 1, rows[i].id)
-        }
-
-        if (append.children.length === 0) delete append.children
-
-        ret.push(append)
+    async onSubmit () {
+      const { status } = await this.axios.post('menus', { ...this.menu })
+      if (status === 201) {
+        this.$message('성공적으로 등록되었습니다.')
+        location.reload()
       }
-      return ret
+    },
+    async onModify () {
+      this.isLoading = true
+      const { status } = await this.axios.put(`menus/${this.id}`, { ...this.menu })
+      if (status === 200) {
+        this.isLoading = false
+        this.$message('수정 완료')
+        location.reload()
+      }
+    },
+    async onDelete () {
+      const { status } = await this.axios.delete(`menus/${this.id}`)
+      if (status === 204) {
+        this.$message('삭제 완료')
+        location.reload()
+      }
     }
   }
 }
