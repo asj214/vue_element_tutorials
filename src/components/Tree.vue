@@ -14,6 +14,13 @@ export default {
   name: 'node',
   props: {
     node: Object
+  },
+  methods: {
+    getItemPath (node) {
+      const unique = node.id
+      if (node.page.path !== '') console.log(node.page.path)
+      return unique
+    }
   }
 }
 </script>

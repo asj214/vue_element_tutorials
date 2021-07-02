@@ -8,7 +8,7 @@ export const generateNested = (rows, depth = 0, parentId) => {
     if (parentId && rows[i].parent !== parentId) continue
 
     page = rows[i].page
-    if (!page) page = { path: '', name: '' }
+    if (!page) page = { path: rows[i].id.toString(), name: '' }
 
     append = {
       id: rows[i].id,

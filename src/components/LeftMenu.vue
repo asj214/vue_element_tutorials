@@ -1,5 +1,11 @@
 <template>
-  <el-menu :default-active="activeMenu" class="g-side" v-show="visible" router>
+  <el-menu
+    :default-active="activeMenu"
+    :unique-opened="true"
+    class="g-side"
+    v-show="visible"
+    router
+  >
     <template v-for="(menu, key) in menus">
       <Tree :node="menu" :key="key"></Tree>
     </template>
